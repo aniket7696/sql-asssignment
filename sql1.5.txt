@@ -1,0 +1,185 @@
+use Training_24Oct18_Pune 
+
+/*1. Write a query which displays Staff Name, Department Code, Department Name, and
+Salary for all staff who earns more than 2000.*/
+
+select * from staff_master
+select * from department_master
+
+select s.staff_name, d.dept_code, d.dept_name, s.salary 
+from staff_master s inner join department_master d on (s.dept_code=d.dept_code) 
+where s.salary>2000
+
+/*2. Write a query to display Staff Name, Department Code, and Department Name for all
+staff who do not work in Department code 10*/
+
+select s.staff_name, d.dept_code, d.dept_name
+from staff_master s full join department_master d on (s.dept_code=d.dept_code) 
+where s.dept_code<>10
+ 
+
+(Q3)Print out a report like this.
+Sol:-
+select * from book_master;
+select * from book_transaction;
+
+select m.book_name,count(t.book_code) as NoOfTimeIssued
+from book_master m inner join book_transaction t
+on m.book_code=t.book_code
+group by m.book_name
+
+use training
+
+/*(Q4)List out number of students joined each department. The report should be displayed like this
+Sol:-*/
+
+select * from department_master;
+select * from student_master;
+
+select d.dept_name,count(*) as no_of_student_joined
+from department_master d inner join student_master s on (d.dept_code=s.dept_code)
+group by d.dept_name
+
+
+/*5. List out a report like this
+Staff Code Staff Name Manager Code Manager Name*/
+
+select * from staff_master;
+
+select s1.staff_code, s1.staff_name, s2.mgr_code, s2.mgr_name
+from staff_master s1 inner join staff_master s2 on (s1.staff_code=s2.staff_code)
+where s2.mgr_name is not null
+
+/*6. Display the Staff Name, Hire date and day of the week on which staff was hired.
+Label the column as DAY. Order the result by the day of the week starting with
+Monday.*/
+select * from staff_master;
+
+select staff_name, hire_date, datename(dw,hire_date) as DAY_
+from staff_master order by hire_date;
+
+/*7. Display Staff Code, Staff Name, and Department Name for those who have taken
+more than one book.*/
+select * from staff_master;
+select * from Book_Transaction;
+select * from department_master;
+
+select s.staff_code, s.staff_name, d.dept_name 
+from staff_master s inner join Book_Transaction b on (s.staff_code=b.staff_code)
+inner join department_master d on (s.dept_code=d.dept_code)
+group by s.staff_name, s.staff_code, d.dept_name
+having count(b.staff_code)>1
+
+/*8. List out the names of all student code whose score in subject1 is equal to the
+highest score*/
+
+
+Select * from student_marks
+Select * from student_master
+select s2.student_name
+from student_marks s1 inner join student_master s2 on (s1.student_code=s2.student_code)
+where (s1.subject1>s1.subject2 and s1.subject1>s1.subject3) order by s1.subject1 desc
+
+/*9. Modify the above query to display student names along with the codes.*/
+
+select s1.student_code, s2.student_name
+from student_marks s1 inner join student_master s2 on (s1.student_code=s2.student_code)
+where (s1.subject1>s1.subject2 and s1.subject1>s1.subject3) order by s1.subject1 desc
+
+/*10. List out the names of all the books along with the author name, book code and
+category which have not been issued at all. Try solving this question using EXISTS.*/
+
+select * from Book_Transaction;
+select * from Book_master;
+
+select book_code, book_name, book_pub_author, book_category from Book_master
+where exists(select book_code from book_transaction where book_issue_date!=NULL)
+
+use Training_24Oct18_Pune
+
+/*11. List out the code and names of all staff and students belonging to department 20.*/
+
+Select * from student_master
+Select * from staff_master
+
+select stud_code, stud_name from student_master where dept_code=20
+UNION
+select staff_code, staff_name from staff_master where dept_code=20
+
+
+/*12. List out all the students who have not appeared for exams this year.*/
+
+select * from Student_Marks
+Select * from student_master
+
+select s1.student_code, s2.student_name 
+from Student_Marks s1 inner join student_master s2
+on (s1.student_code=s2.student_code) where s1.student_year<>datename(yyyy,getdate())
+
+/*13. List out all the student codes who have never taken books*/
+
+Select * from student_master
+select * from book_transaction
+select stud_code 
+from student_master
+Except (select stud_code 
+from book_transaction where stud_code is not null )
+
+/*14.) Add the following records to the Customers Table , created in our earlier exercises*/
+
+ create table Customers_777(
+ Customer_id varchar(50),
+ Customer_name varchar(50),
+ Address1 varchar(50),
+ Address2 varchar(50),
+ Contact varchar(50),
+ Postal_Code varchar(50),
+ Region varchar(50),
+ Gender varchar(50) 
+ )
+
+ insert into Customers_777 values('ALFKI','AlfredsFutterkiste','ObereStr. 57','Berlin,Germany','030-0074321','12209',NULL,NULL),
+('ANATR','Ana TrujilloEmparedados yhelados','Avda dela Constitución 2222','México D.F.Mexico','55554729','5021',NULL,NULL),
+('ANTON','Antonio Moreno Taquería','Mataderos 2312','México D.F.,Mexico','5-555-3932','5023',NULL,NULL),
+('AROUT','Around the Horn','120 Hanover Sq.','London,UK','171-555-7788','WA11DP',NULL,NULL),
+('BERGS','Berglundssnabbköp','Berguvsv ägen 8','Luleå,Sweden','0921-123465','S-95822',NULL,NULL),
+('BLAUS','Blauer SeeDelikatessen','Forsterstr. 57','Mannheim,Germany','0621-08460','68306',NULL,NULL),
+('BLONP','Blondesddslpèreet fils','24, placeKléber','Strasbourg,France','88-60-15-31','67000',NULL,NULL),
+('BOLID','BólidoComidaspreparadas','C/Araquil,67','Madrid,Spain','91-555-22-82','28023','EU',NULL),
+('BONAP','Bon app','12, ruedesBouchers','Marseille,France','91-24-45-40','13008',NULL,NULL),
+('BOTTM','Bottom-DollarMarkets','23 Tsawassen Blvd.','Tsawassen,Canada','604-555-4729','T2F8M4','BC',NULL);
+
+select * from Customers_777
+
+/*15. Replace the contact number of Customer id ANATR to (604) 3332345.*/
+update Customers_777 set contact='(604) 3332345' where customer_id='ANATR'
+
+/*16. Update the Address and Region of Customer BOTTM*/
+update Customers_777 set address1='19/2 12th Block, Spring Fields.',
+address2='Ireland - UK', region='EU' where customer_id='BOTTM';
+
+/*17. Insert the following records in the Orders table. The Order id should be automatically
+generated*/
+Create table Orders_7777(
+Orders_id int CONSTRAINT Ord_1234 unique Identity(1,10),
+Customer_id varchar(50),
+Order_date date,
+Order_State char(10)
+);
+
+insert into Orders_7777 values('AROUT','4-Jul-96','P'),
+('ALFKI','5-Jul-96','C'),('BLONP','8-Jul-96','P'),('ANTON','8-Jul-96','P'),
+('ANTON','9-Jul-96','P'),('BOTTM','10-Jul-96','C'),('BONAP','11-Jul-96','P'),
+('ANATR','12-Jul-96','P'),('BLAUS','15-Jul-96','C'),('HILAA','16-Jul-96','P');
+
+select * from Orders_7777
+
+/*18. Delete all the Customers whose Orders have been cleared.*/
+delete from Orders_7777 where order_state='C'
+
+/*19. Remove all the records from the table using the truncate command. Rerun the script
+to populate the records once again*/
+truncate table Orders_7777
+
+/*20. Change the order status to C, for all orders before `15th July.*/
+update Orders_7777 set order_state='C' where order_date<='1996-07-15';

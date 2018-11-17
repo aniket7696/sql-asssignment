@@ -1,0 +1,18 @@
+--2.3 Indexes and Views
+
+/* 1. Create a Filtered Index HumanResources.Employee table present in the
+AdventureWorks database for the column EmployeeID. The index should cover all
+the queries that uses EmployeeID for its search & that select only rows with
+“Marketing Manager” for Title column.*/
+
+select h.employeeid
+from HumanResources.Employee h
+where h.title='Marketing Manager'
+
+Create nonclustered index dept_123
+on HumanResources.Employee(EmployeeID)
+where title='Marketing Manager'
+
+select h.employeeid
+from HumanResources.Employee h
+where h.title='Marketing Manager'

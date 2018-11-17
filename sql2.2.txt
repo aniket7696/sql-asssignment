@@ -1,0 +1,40 @@
+--2.2 Data Retrieval - Joins, Subqueries, SET Operators and DML
+
+/* 1. Write a query that displays Staff Name, Salary, and Grade of all staff. Grade depends
+     on the following table.
+
+Salary                     Grade
+Salary >=50000               A
+Salary >= 25000 < 50000      B
+Salary>=10000 < 25000        C
+*/
+   select staff_name,staff_sal,
+     case
+     when staff_sal >=50000 THEN 'A'
+     when staff_sal >=25000 and staff_sal <50000 THEN 'B'
+     when staff_sal >=10000 and staff_sal <25000 THEN 'C'
+     ELSE 'D'
+     end
+     as grade
+   from staff_master
+
+/* 2. Generate a report which contains the following information.
+Staff Code, Staff Name, Designation, Department, Book Code, Book Name,
+Author, Fine
+For the staff who have not return the book. Fine will be calculated as Rs. 5 per
+day.
+Fine = 5 * (No. of days = Current Date – Expected return date), for others it
+should be displayed as –
+*/
+
+/*3. List out all the staffs who are reporting to the same manager to whom staff 100060
+reports to.*/
+
+select * from staff_master
+
+/*4. List out all the students along with the department who reads the same books which
+the professors read
+*/
+
+select * from book_transaction
+select * from student_master 
